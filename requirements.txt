@@ -1,0 +1,210 @@
+Data Understanding workspace analysis
+
+1. ANNUAL INCOME
+What we see
+Extremely right-skewed distribution
+Massive high-income outliers
+Default and non-default overlap heavily
+
+The separation is NOT very strong visually.
+
+Banking Interpretation
+
+Higher income alone is NOT enough to determine repayment quality.
+
+This is realistic because:
+
+some high earners still overborrow
+debt burden matters more than raw income
+
+VERY IMPORTANT DISCOVERY
+
+Income is heavily skewed.
+
+This is a CLASSIC candidate for:
+
+log transformation
+
+Later we will likely create:
+
+log_annual_income
+
+using:
+
+df['log_annual_income'] = np.log1p(df['annual_income'])
+
+This usually improves:
+
+logistic regression stability
+WoE binning
+feature separability
+
+
+
+
+2. CREDIT UTILIZATION %
+
+THIS is VERY important.
+
+What we see
+
+Defaulters clearly show:
+
+higher median utilization
+wider spread
+more concentration at higher values
+
+This is a STRONG risk signal.
+
+Banking Interpretation
+
+Customers using a large percentage of available credit are often:
+
+financially stressed
+liquidity constrained
+overleveraged
+
+This is one of the BEST credit risk predictors in real banking.
+
+VERY IMPORTANT OBSERVATION
+
+The relationship appears monotonic:
+
+Higher utilization → higher default risk
+
+That is PERFECT for:
+
+logistic regression
+WoE binning
+scorecards
+
+This is VERY good.
+
+
+
+3. DTI RATIO
+
+THIS is another excellent signal.
+
+What we see
+
+Defaulters have:
+
+noticeably higher DTI
+higher median
+heavier upper tail
+
+Very strong separation.
+
+Banking Interpretation
+
+DTI (Debt-to-Income ratio) measures:
+
+how much debt burden a customer carries relative to income.
+
+Higher DTI means:
+
+less repayment capacity
+less disposable income
+higher default probability
+
+This is a CORE banking metric.
+
+IMPORTANT OBSERVATION
+
+Again:
+relationship appears monotonic.
+
+Higher DTI → higher default probability.
+
+Excellent for scorecard modelling.
+
+
+
+4. INTEREST RATE
+
+VERY interesting.
+
+What we see
+
+Defaulters received noticeably higher interest rates.
+
+This suggests:
+
+the lender already risk-priced applicants
+higher-risk borrowers were charged more
+Banking Interpretation
+
+This is realistic banking behavior.
+
+Interest rates may already contain embedded risk assessment information.
+
+VERY IMPORTANT WARNING
+
+This feature could become VERY predictive.
+
+BUT:
+
+You must later check whether:
+
+it introduces leakage
+it is “too close” to the target
+
+Because if rates were assigned using internal risk scoring,
+then the model indirectly contains existing model decisions.
+
+This is VERY important.
+
+We will investigate later.
+
+
+5. NUMBER OF DELINQUENCIES
+
+THIS is one of your BEST predictors so far.
+
+What we see
+
+Defaulters clearly show:
+
+more prior delinquencies
+much higher spread
+higher median
+
+Very strong separation.
+
+Banking Interpretation
+
+Past bad repayment behavior is one of the strongest predictors of future default.
+
+This is extremely realistic.
+
+IMPORTANT DISCOVERY
+
+This variable is:
+
+discrete
+monotonic
+interpretable
+scorecard friendly
+
+VERY GOOD for WoE.
+
+OVERALL ASSESSMENT SO FAR
+Feature	Predictive Strength
+annual_income	Weak/Moderate
+credit_utilisation_pct	Strong
+dti_ratio	Strong
+interest_rate	Strong but suspicious
+num_delinquencies_2yr	Very Strong
+
+This is EXACTLY what we want to discover during EDA.
+
+NOW WE MOVE TO ADVANCED EDA
+
+Next we investigate:
+
+categorical variables
+correlations
+leakage
+temporal behavior
+WoE preparation
